@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Customer Management</title>
+	<style>
+		/*table Css Starts*/
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		/* Style for the header that fades when scrolling */
+		.pageheader {
+			position: fixed;
+			text-align: center;
+			width: 100%;
+			transition: opacity 0.4s ease;
+		}
+
+		.pageheader.scroll-opacity {
+			opacity: 0.5;
+			/* Adjust the opacity value as needed */
+		}
+
+		/* Style for the header that changes color every 5 seconds */
+		.pageheader.color-change {
+			animation: colorChange 1s infinite;
+		}
+
+		@keyframes colorChange {
+
+			0%,
+			100% {
+				color: red;
+				/* Change to the desired color */
+			}
+
+			25% {
+				color: green;
+				/* Change to the desired color */
+			}
+
+			50% {
+				color: blue;
+				/* Change to the desired color */
+			}
+
+			75% {
+				color: orange;
+				/* Change to the desired color */
+			}
+		}
+
+		/*Table styles*/
+		#customerList {
+			border-collapse: collapse;
+			width: 100%;
+			margin: auto;
+			background-color: #f2f2f2;
+		}
+
+		#customerList th,
+		#customerList td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		#customerList th {
+			background-color: #3498db;
+			color: white;
+		}
+
+		#customerList tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		#customerList tr:hover {
+			background-color: #ddd;
+		}
+
+		.delete-button {
+			background-color: #e74c3c;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		/*table Css Ends*/
+
+		.delete-btn {
+			background-color: #e74c3c;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+			transition: background-color 0.3s;
+		}
+
+		.delete-btn:hover {
+			background-color: #c0392b;
+		}
+
+		.update-btn {
+			background-color: #2ecc71;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+			transition: background-color 0.3s;
+		}
+
+		.update-btn:hover {
+			background-color: #27ae60;
+		}
+
+
+		/* Common form styles */
+		#CustomerForm,
+		#CustomerFormUpd {
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			margin: 20px;
+			transition: border-color 0.3s;
+			text-align: -moz-center;
+
+		}
+
+		/* Add customer form style */
+		.addcustomer #CustomerForm {
+			border-color: rgb(255, 0, 0);
+			background-color: rgb(188, 199, 199);
+		}
+
+		.updatecustomer #CustomerForm {
+			border-color: #3498db;
+			background-color: #f2f2f2;
+		}
+
+		/* Input fields and submit button styles */
+		.addcustomer input[type="text"],
+		.addcustomer input[type="email"],
+		.updatecustomer input[type="text"],
+		.updatecustomer input[type="email"] {
+			display: block;
+			width: 35%;
+			padding: 10px;
+			margin: 5px 0;
+			border: 1px solid rgb(188, 199, 199);
+			border-radius: 5px;
+		}
+
+		.addcustomer button[type="submit"],
+		.updatecustomer button[type="submit"] {
+			background-color: #3498db;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.addcustomer input[type="submit"]:hover,
+		.updatecustomer button[type="submit"]:hover {
+			background-color: #2980b9;
+		}
+
+		.expand {
+			position: relative;
+			padding-top: 20px;
+		}
+
+
+
+		/* Style for the search input */
+		#searchInput {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 20px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		#customerList tr:not(:first-child):hover {
+			background-color: #f2f2f2;
+		}
+
+
+		#customerList tr {
+			transition: opacity 0.3s ease-in-out;
+		}
+
+		#customerList tr.hidden {
+			opacity: 0;
+		}
+
+		/*footer style*/
+		footer nav ul li a {
+			color: rgb(255, 0, 255);
+			text-decoration: none;
+			font-weight: bold;
+			transition: color 0.2s ease-in-out;
+		}
+
+		footer nav ul li a:hover {
+			color: #ffc107;
+			/* Change color on hover */
+		}
+
+		.button-container {
+			width: 50%;
+			z-index: 10;
+			/* Center vertically */
+			text-align: right;
+			/* Align buttons to the left */
+			margin-top: 10px;
+			/* Add some spacing */
+		}
+
+		/* Style for the "Reset Form" button */
+		.resetForm {
+			background-color: #f44336;
+			/* Red color */
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			text-align: right;
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			cursor: pointer;
+			margin-right: 10px;
+			/* Add spacing between buttons */
+		}
+
+		/* Style for the "Toggle Form" button */
+		.toggleForm {
+			background-color: #2196F3;
+			/* Blue color */
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			text-align: right;
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.table-container{
+			width: auto;
+			height: 500px;
+			overflow: auto;
+		}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+	<h1 class="pageheader color-change ">Customer Management</h1>
+
+	<div style="display: flex; justify-content: space-between;">
+		<h2 id="customerTitle" style="width:50%;">Add Customer</h2>
+		<div class="button-container" >
+			<button class="resetForm" onclick="resetForm()"> <i class="fas fa-undo"></i> Reset</button>
+			<button class="toggleForm" onclick="toggleForm()"> <i class="fas fa-toggle-on"></i>Show / Hide</button>
+		</div>
+	</div>
+	<form id="CustomerForm" class="addcustomer">
+		<input type="text" id="customerId" placeholder="Customer ID" style="display:none;" type="hidden">
+		<input type="text" id="firstName" placeholder="First Name" required>
+		<input type="text" id="lastName" placeholder="Last Name" required>
+		<input type="email" id="email" placeholder="Email" required>
+		<input type="text" id="phone" placeholder="Phone" required>
+		<button type="submit" id="submitButton">Add Customer</button>
+	</form>
+
+	<h2>Customers</h2>
+	<ul>
+		<input type="text" id="searchInput" placeholder="Search...">
+		<div class="table-container"> <table id="customerList"></table> </div>
+		
+	</ul>
+	<br>
+	<br>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="app.js"></script>
+</body>
+
+
+<!--footer-->
+<footer>
+	<nav>
+		<ul style="display: flex; justify-content: space-between;">
+			<li><a href="about.html" style="width:50%;">About</a></li>
+			<li><a href="contact.html" style="width:50%;text-align: right;">Contact</a></li>
+		</ul>
+	</nav>
+</footer>
+
+</html>
